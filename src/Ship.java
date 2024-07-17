@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class Ship {
 
-   private ArrayList<Position> ship;
+   private ArrayList<ShipCell> ship;
    private String type;
 
-   Ship(ArrayList<Position> ship, String type) {
+   Ship(ArrayList<ShipCell> ship, String type) {
       this.ship = ship;
       this.type = type;
    }
@@ -13,10 +13,11 @@ public class Ship {
    public boolean isDestroyed() {
       return ship.isEmpty();
    }
-   public ArrayList<Position> getShip() {
+
+   public ArrayList<ShipCell> getShip() {
       return ship;
    }
-   public void setShip(ArrayList<Position> ship) {
+   public void setShip(ArrayList<ShipCell> ship) {
       this.ship = ship;
    }
 
