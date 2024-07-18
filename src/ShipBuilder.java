@@ -6,6 +6,10 @@ import java.util.Scanner;
 
 public class ShipBuilder {
 
+   static final String ANSI_RED = "\u001B[31m";
+   static final String ANSI_RESET = "\u001B[0m";
+   static final String ANSI_YELLOW = "\u001B[33m";
+
    Ship ship;
 
    ShipBuilder(String type, int length, int team) {
@@ -13,7 +17,8 @@ public class ShipBuilder {
    }
 
    public void inputShipPositions(String type, int length, int team) {
-      System.out.println("Current ship: " + type + " (length: " + length + ")");
+      System.out.println("Current ship: " + ANSI_YELLOW + type + ANSI_RESET +
+            " (length: " + ANSI_YELLOW + length + ANSI_RESET + ")");
       System.out.print("Enter bow position (e.g. C3): ");
       int[] bowPositions = getPositionInput(type , length);
       System.out.print("Enter stern position (e.g. C3): ");
@@ -26,7 +31,7 @@ public class ShipBuilder {
       Scanner in = new Scanner(System.in);
       String newPos = in.next();
       if (!isValidCoordinate(newPos)) {
-         System.out.println("That is not a valid coordinate, try again.");
+         System.out.println(ANSI_RED + "That is not a valid coordinate, try again." + ANSI_RESET);
          System.out.print("Enter position (e.g. C3)");
          return getPositionInput(type, length);
       } else {
@@ -70,7 +75,7 @@ public class ShipBuilder {
          }
          return positions;
       } else {
-         System.out.println("That is not a valid ship placement! Try again!");
+         System.out.println(ANSI_RED + "That is not a valid ship placement! Try again!" + ANSI_RESET);
          return calculateLine(getPositionInput("bow", length), getPositionInput("stern", length), length, type);
       }
    }
@@ -83,9 +88,9 @@ public class ShipBuilder {
       int deltaX = Math.abs(sternX - bowX);
       int deltaY = Math.abs(sternY - bowY);
       //debugging
-      System.out.println("bowX: " + bowX + ", bowY: " + bowY);
-      System.out.println("sternX: " + sternX + ", sternY: " + sternY);
-      System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
+      //System.out.println("bowX: " + bowX + ", bowY: " + bowY);
+      //System.out.println("sternX: " + sternX + ", sternY: " + sternY);
+      //System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
       return (bowX == sternX && deltaY == length - 1) ||
             (bowY == sternY && deltaX == length - 1);
    }

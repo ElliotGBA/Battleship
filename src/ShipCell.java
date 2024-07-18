@@ -1,7 +1,7 @@
 public class ShipCell {
 
-   static final String ANSI_RED = "\u001B[31m";
-   static final String ANSI_GREEN = "\u001B[32m";
+   static final String ANSI_RED = "\u001B[1;31m";
+   static final String ANSI_GREEN = "\033[1;32m";
    static final String ANSI_RESET = "\u001B[0m";
 
    Position position;

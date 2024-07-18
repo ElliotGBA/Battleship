@@ -30,5 +30,7 @@ public class Ship {
    public int getLength() {
       return length;
    }
-
+   public int getTeam() {
+      return team;
+   }
 }
