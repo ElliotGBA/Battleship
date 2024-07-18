@@ -16,9 +16,7 @@ public class ShipCell {
    }
 
    String createIcon() {
-      return team == 0 ?
-            (ANSI_GREEN + "[0]" + ANSI_RESET) :
-            (ANSI_RED + "[*]" + ANSI_RESET);
+      return team == 0 ? (ANSI_GREEN + "[0]" + ANSI_RESET) : (ANSI_RED + "[*]" + ANSI_RESET);
    }
    public String getIcon() {
       return icon;

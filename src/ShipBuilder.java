@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 // this class is essentially a large function for better organization
@@ -11,9 +12,16 @@ public class ShipBuilder {
    static final String ANSI_YELLOW = "\u001B[33m";
 
    Ship ship;
+   Random random = new Random();
+   Board board;
 
-   ShipBuilder(String type, int length, int team) {
-      inputShipPositions(type, length, team);
+   ShipBuilder(String type, int length, int team, boolean isAI, Board board) {
+      this.board = board;
+      if (isAI) {
+         generateRandomShipPositions(type, length, team);
+      } else {
+         inputShipPositions(type, length, team);
+      }
    }
 
    public void inputShipPositions(String type, int length, int team) {
@@ -95,6 +103,38 @@ public class ShipBuilder {
 //      System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
       return (bowX == sternX && deltaY == length - 1) ||
             (bowY == sternY && deltaX == length - 1);
+   }
+
+   private void generateRandomShipPositions(String type, int length, int team) {
+      int[] bowPositions, sternPositions;
+      boolean validPlacement = false;
+
+      while (!validPlacement) {
+         bowPositions = getRandomPosition();
+         sternPositions = getRandomPosition();
+         if (verifyVerticalOrHorizontalPlacement(bowPositions, sternPositions, length)) {
+            ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type, team);
+            if (positions != null) {
+               boolean overlap = false;
+               for (Position pos : positions) {
+                  if (board.getOccupiedPositions().contains(pos)) {
+                     overlap = true;
+                     break;
+                  }
+               }
+               if (!overlap) {
+                  createShip(positions, type, team, length);
+                  validPlacement = true;
+               }
+            }
+         }
+      }
+   }
+
+   private int[] getRandomPosition() {
+      int x = random.nextInt(10) + 1;
+      int y = random.nextInt(10) + 1;
+      return new int[]{x, y};
    }
 
    public boolean isValidCoordinate(String s) {

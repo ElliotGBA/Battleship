@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Board {
 
@@ -13,11 +15,13 @@ public class Board {
    int[][] board;
    ShipCell[][] shipMatrix;
    String boardName;
+   Set<Position> occupiedPositions;
 
    Board(int height, int width, String boardName) {
       this.boardName = boardName;
       board = new int[height][width];
       shipMatrix = new ShipCell[height][width];
+      occupiedPositions = new HashSet<>();
    }
 
    public void placeShip(Ship ship) {
@@ -27,10 +31,11 @@ public class Board {
             int currentX = positions.get(i).getX();
             int currentY = positions.get(i).getY();
             shipMatrix[currentX][currentY] = ship.getShip().get(i);
+            occupiedPositions.add(new Position(currentX, currentY));
          }
       } else {
          System.out.println(ANSI_RED + "That ship is colliding with another ship!" + ANSI_RESET);
-         placeShip(new ShipBuilder(ship.getType(), ship.getLength(), 0).returnShip());
+         placeShip(new ShipBuilder(ship.getType(), ship.getLength(), 0, false, this).returnShip());
       }
    }
 
@@ -47,6 +52,10 @@ public class Board {
 
    public int[][] getBoard() {
       return board;
+   }
+
+   public Set<Position> getOccupiedPositions() {
+      return occupiedPositions;
    }
 
    public void displayBoard(Map<String, Integer> shipTypes) {
@@ -89,12 +98,15 @@ public class Board {
 
    void printBoardTiles(int i, int j) {
       String waterCell = ANSI_BLUE + "[~]" + ANSI_RESET;
+      String enemyCell = ANSI_RED + "[*]" + ANSI_RESET;
       if (j == 0 && i != 0) {
          System.out.print(getCharForNumber(i));
       } else if (i != 0 && j != 0 && shipMatrix[i][j] == null) {
          System.out.print(waterCell);
-      } else if (shipMatrix[i][j] != null) {
+      } else if (shipMatrix[i][j] != null && shipMatrix[i][j].team == 0) {
          System.out.print(shipMatrix[i][j].getIcon());
+      } else if (shipMatrix[i][j] != null && shipMatrix[i][j].team == 1) {
+         System.out.print(enemyCell);
       }
    }
 

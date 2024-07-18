@@ -15,13 +15,15 @@ public class Game {
 
       Board playerBoard = new Board(11, 11, "Your Board");
       Board enemyBoard = new Board(11, 11, "Enemy Board");
+      for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
+         enemyBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 1, true, enemyBoard).returnShip());
+      }
       displayGame(playerBoard, enemyBoard);
 
       for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
-         playerBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 0).returnShip());
+         playerBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 0, false, playerBoard).returnShip());
          displayGame(playerBoard, enemyBoard);
       }
-
    }
 
    static void displayGame(Board playerBoard, Board enemyBoard) {
