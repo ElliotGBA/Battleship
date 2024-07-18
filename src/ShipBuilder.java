@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,14 +12,6 @@ public class ShipBuilder {
       inputShipPositions(type, length, team);
    }
 
-   public void createShip(ArrayList<Position> positions, String type, int team) {
-      ArrayList<ShipCell> shipCells = new ArrayList<ShipCell>();
-      for (Position p : positions) {
-         shipCells.add(new ShipCell(p, 1, team));
-      }
-      this.ship = new Ship(shipCells, type);
-   }
-
    public void inputShipPositions(String type, int length, int team) {
       System.out.println("Current ship: " + type + " (length: " + length + ")");
       System.out.print("Enter bow position (e.g. C3): ");
@@ -28,7 +19,7 @@ public class ShipBuilder {
       System.out.print("Enter stern position (e.g. C3): ");
       int[] sternPositions = getPositionInput(type , length);
       ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type);
-      createShip(positions, type, team);
+      createShip(positions, type, team, length);
    }
 
    private int[] getPositionInput(String type, int length) {
@@ -44,6 +35,14 @@ public class ShipBuilder {
          int newPosY = Character.getNumericValue(newPos.charAt(1))+1;
          return new int[]{newPosX, newPosY};
       }
+   }
+
+   public void createShip(ArrayList<Position> positions, String type, int team, int length) {
+      ArrayList<ShipCell> shipCells = new ArrayList<ShipCell>();
+      for (Position p : positions) {
+         shipCells.add(new ShipCell(p, 1, team));
+      }
+      this.ship = new Ship(shipCells, type, length, team);
    }
 
    private ArrayList<Position> calculateLine(int[] bowPositions, int[] sternPositions, int length, String type) {

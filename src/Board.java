@@ -20,11 +20,27 @@ public class Board {
 
    public void placeShip(Ship ship) {
       ArrayList<ShipCell> positions = ship.getShip();
-      for (int i = 0; i < ship.getShip().size(); i++) {
-         int currentX = positions.get(i).getX();
-         int currentY = positions.get(i).getY();
-         shipMatrix[currentX][currentY] = ship.getShip().get(i);
+      if (checkForShipCollisions(positions)) {
+         for (int i = 0; i < ship.getShip().size(); i++) {
+            int currentX = positions.get(i).getX();
+            int currentY = positions.get(i).getY();
+            shipMatrix[currentX][currentY] = ship.getShip().get(i);
+         }
+      } else {
+         System.out.println(ANSI_RED + "That ship is colliding with another ship!" + ANSI_RESET);
+         placeShip(new ShipBuilder(ship.getType(), ship.getLength(), 0).returnShip());
       }
+   }
+
+   private boolean checkForShipCollisions(ArrayList<ShipCell> positions) {
+      for (ShipCell s : positions) {
+         if (shipMatrix[s.getX()][s.getY()] != null) {
+            return false;
+         } else {
+            return true;
+         }
+      }
+      return false;
    }
 
    public int[][] getBoard() {
