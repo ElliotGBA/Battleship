@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Board {
 
@@ -13,8 +12,10 @@ public class Board {
 
    int[][] board;
    ShipCell[][] shipMatrix;
+   String boardName;
 
-   Board(int height, int width) {
+   Board(int height, int width, String boardName) {
+      this.boardName = boardName;
       board = new int[height][width];
       shipMatrix = new ShipCell[height][width];
    }
@@ -59,6 +60,11 @@ public class Board {
       for (int i = -1; i < board.length-1; i++) {
          horizontalBar += ANSI_YELLOW + "[" + (i == -1 ? " " : i) + "]" + ANSI_RESET;
       }
+
+      String friendlyBoard = ANSI_GREEN + boardName + ANSI_RESET;
+      String enemyBoard = ANSI_RED + boardName + ANSI_RESET;
+      String displayName = this.boardName == "Your Board" ? friendlyBoard : enemyBoard;
+      System.out.print("           " + displayName);
       System.out.print("\n" + horizontalBar);
       for (int i = 0; i < board.length; i++) {
          for (int j = 0; j < board[i].length; j++) {

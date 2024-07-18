@@ -20,25 +20,27 @@ public class ShipBuilder {
       System.out.println("Current ship: " + ANSI_YELLOW + type + ANSI_RESET +
             " (length: " + ANSI_YELLOW + length + ANSI_RESET + ")");
       System.out.print("Enter bow position (e.g. C3): ");
-      int[] bowPositions = getPositionInput(type , length);
+      int[] bowPositions = getPositionInput(type , length, team);
       System.out.print("Enter stern position (e.g. C3): ");
-      int[] sternPositions = getPositionInput(type , length);
-      ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type);
+      int[] sternPositions = getPositionInput(type , length, team);
+      ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type, team);
       createShip(positions, type, team, length);
+      System.out.println("\n\n\n\n\n\n\n");
    }
 
-   private int[] getPositionInput(String type, int length) {
+   private int[] getPositionInput(String type, int length, int team) {
       Scanner in = new Scanner(System.in);
       String newPos = in.next();
       if (!isValidCoordinate(newPos)) {
          System.out.println(ANSI_RED + "That is not a valid coordinate, try again." + ANSI_RESET);
          System.out.print("Enter position (e.g. C3): ");
-         return getPositionInput(type, length);
+         inputShipPositions(type, length, team);
       } else {
          int newPosX = newPos.toUpperCase().charAt(0) - 'A' + 1;
          int newPosY = Integer.parseInt(newPos.substring(1)) + 1;
          return new int[]{newPosX, newPosY};
       }
+      return null;
    }
 
    public void createShip(ArrayList<Position> positions, String type, int team, int length) {
@@ -49,7 +51,7 @@ public class ShipBuilder {
       this.ship = new Ship(shipCells, type, length, team);
    }
 
-   private ArrayList<Position> calculateLine(int[] bowPositions, int[] sternPositions, int length, String type) {
+   private ArrayList<Position> calculateLine(int[] bowPositions, int[] sternPositions, int length, String type, int team) {
       // Check if x or y coordinate stays the same and length is correct
       if (verifyVerticalOrHorizontalPlacement(bowPositions, sternPositions, length)) {
          ArrayList<int[]> intPositions = new ArrayList<>();
@@ -75,8 +77,9 @@ public class ShipBuilder {
          return positions;
       } else {
          System.out.println(ANSI_RED + "That is not a valid ship placement! Try again!" + ANSI_RESET);
-         return calculateLine(getPositionInput("bow", length), getPositionInput("stern", length), length, type);
+         inputShipPositions(type, length, team);
       }
+      return null;
    }
 
    private boolean verifyVerticalOrHorizontalPlacement(int[] bowPositions, int[] sternPositions, int length) {
@@ -87,9 +90,9 @@ public class ShipBuilder {
       int deltaX = Math.abs(sternX - bowX);
       int deltaY = Math.abs(sternY - bowY);
       //debugging
-      System.out.println("bowX: " + bowX + ", bowY: " + bowY);
-      System.out.println("sternX: " + sternX + ", sternY: " + sternY);
-      System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
+//      System.out.println("bowX: " + bowX + ", bowY: " + bowY);
+//      System.out.println("sternX: " + sternX + ", sternY: " + sternY);
+//      System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
       return (bowX == sternX && deltaY == length - 1) ||
             (bowY == sternY && deltaX == length - 1);
    }
