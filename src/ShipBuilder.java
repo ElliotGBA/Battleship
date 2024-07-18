@@ -32,12 +32,11 @@ public class ShipBuilder {
       String newPos = in.next();
       if (!isValidCoordinate(newPos)) {
          System.out.println(ANSI_RED + "That is not a valid coordinate, try again." + ANSI_RESET);
-         System.out.print("Enter position (e.g. C3)");
+         System.out.print("Enter position (e.g. C3): ");
          return getPositionInput(type, length);
       } else {
-         int newPosX = newPos.charAt(0) - 'A';
-         newPosX = newPosX == 0 ? newPosX : newPosX % 10 - 1;
-         int newPosY = Character.getNumericValue(newPos.charAt(1))+1;
+         int newPosX = newPos.toUpperCase().charAt(0) - 'A' + 1;
+         int newPosY = Integer.parseInt(newPos.substring(1)) + 1;
          return new int[]{newPosX, newPosY};
       }
    }
@@ -88,23 +87,17 @@ public class ShipBuilder {
       int deltaX = Math.abs(sternX - bowX);
       int deltaY = Math.abs(sternY - bowY);
       //debugging
-      //System.out.println("bowX: " + bowX + ", bowY: " + bowY);
-      //System.out.println("sternX: " + sternX + ", sternY: " + sternY);
-      //System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
+      System.out.println("bowX: " + bowX + ", bowY: " + bowY);
+      System.out.println("sternX: " + sternX + ", sternY: " + sternY);
+      System.out.println("deltaX: " + deltaX + ", deltaY: " + deltaY);
       return (bowX == sternX && deltaY == length - 1) ||
             (bowY == sternY && deltaX == length - 1);
    }
 
    public boolean isValidCoordinate(String s) {
-      return s != null && s.matches("^[a-zA-Z][0-9]$");
+      return s != null && s.matches("^[a-zA-Z][0-9]+$");
    }
 
-   int getNumberForChar(char c) {
-      if (Character.isDigit(c)) {
-         return Character.getNumericValue(c);
-      }
-      return 0;
-   }
 
    public Ship returnShip() {
       return this.ship;
