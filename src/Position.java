@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Position {
 
    private int x = -1;
