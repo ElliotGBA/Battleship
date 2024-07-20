@@ -19,12 +19,22 @@ public class ShipCell {
    }
 
    String createIcon() {
-      String s = "[" + this.type.charAt(0) + "]" + ANSI_RESET;
-      return team == 0 ? (ANSI_GREEN + s) : (ANSI_RED + s);
+      //String s = "[" + this.type.charAt(0) + "]" + ANSI_RESET;
+      String s = "[" + this.state + "]" + ANSI_RESET;
+      if (this.state == 1) {
+         s = this.team == 0 ? (ANSI_GREEN + s) : (ANSI_RED + s);
+      } else {
+         s = ANSI_RED + "[*]" + ANSI_RESET;
+      }
+      return s;
    }
 
    public String getIcon() {
       return icon;
+   }
+
+   public int getTeam() {
+      return this.team;
    }
 
    public int getState() {

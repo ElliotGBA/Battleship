@@ -11,6 +11,7 @@ public class Board {
 
    int[][] board;
    ShipCell[][] shipMatrix;
+   boolean[][] shotsFired;
    String boardName;
    Set<Position> occupiedPositions;
 
@@ -18,6 +19,7 @@ public class Board {
       this.boardName = boardName;
       board = new int[height][width];
       shipMatrix = new ShipCell[height][width];
+      shotsFired = new boolean[height][width];
       occupiedPositions = new HashSet<>();
    }
 
@@ -81,5 +83,15 @@ public class Board {
       } else if (shipMatrix[i][j] != null) {
          System.out.print(shipMatrix[i][j].getIcon());
       }
+   }
+
+   public ShipCell[][] getShipMatrix() {
+      return shipMatrix;
+   }
+   public void setShotsFired(boolean[][] shotsFired) {
+      this.shotsFired = shotsFired;
+   }
+   public boolean[][] getShotsFired() {
+      return this.shotsFired;
    }
 }

@@ -15,7 +15,14 @@ public class Ship {
    }
 
    public boolean isDestroyed() {
-      return ship.isEmpty();
+      boolean isDestroyed = true;
+      for (ShipCell c : ship) {
+         if (c.getState() == 1) {
+            isDestroyed = false;
+            break;
+         }
+      }
+      return isDestroyed;
    }
 
    public ArrayList<ShipCell> getShipCellList() {
