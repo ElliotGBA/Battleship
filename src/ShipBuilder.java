@@ -23,6 +23,7 @@ public class ShipBuilder {
    }
 
    public void inputShipPositions(String type, int length, int team) {
+
       System.out.println("Current ship: " + ANSI_YELLOW + type + ANSI_RESET +
             " (length: " + ANSI_YELLOW + length + ANSI_RESET + ")");
       System.out.print("Enter bow position (e.g. C3): ");
@@ -30,13 +31,15 @@ public class ShipBuilder {
       System.out.print("Enter stern position (e.g. C3): ");
       int[] sternPositions = getPositionInput(type, length, team);
       ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type, team);
-      if (positions != null && !checkForShipCollisions(positions)) {
+
+      if (positions != null && checkForShipCollisions(positions)) {
          createShip(positions, type, team, length);
          System.out.println("\n\n\n\n\n\n\n");
       } else {
          System.out.println(ANSI_RED + "That ship is colliding with another ship! Try again." + ANSI_RESET);
          inputShipPositions(type, length, team);
       }
+
    }
 
    private int[] getPositionInput(String type, int length, int team) {
@@ -56,7 +59,7 @@ public class ShipBuilder {
    public void createShip(ArrayList<Position> positions, String type, int team, int length) {
       ArrayList<ShipCell> shipCells = new ArrayList<>();
       for (Position p : positions) {
-         shipCells.add(new ShipCell(p, 1, team));
+         shipCells.add(new ShipCell(p, 1, team, type));
       }
       this.ship = new Ship(shipCells, type, length, team);
       board.placeShip(this.ship);
@@ -82,7 +85,7 @@ public class ShipBuilder {
          for (int[] i : intPositions) {
             positions.add(new Position(i[0], i[1]));
          }
-         if (!checkForShipCollisions(positions)) {
+         if (checkForShipCollisions(positions)) {
             return positions;
          }
       } else {
@@ -112,7 +115,7 @@ public class ShipBuilder {
          sternPositions = getRandomPosition();
          if (verifyVerticalOrHorizontalPlacement(bowPositions, sternPositions, length)) {
             ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type, team);
-            if (positions != null && !checkForShipCollisions(positions)) {
+            if (positions != null && checkForShipCollisions(positions)) {
                createShip(positions, type, team, length);
                validPlacement = true;
             }
@@ -130,7 +133,7 @@ public class ShipBuilder {
       return s != null && s.matches("^[a-zA-Z][0-9]+$");
    }
 
-   public Ship returnShip() {
+   public Ship getShip() {
       return this.ship;
    }
 
@@ -138,9 +141,9 @@ public class ShipBuilder {
       Set<Position> occupiedPositions = board.getOccupiedPositions();
       for (Position pos : positions) {
          if (occupiedPositions.contains(pos)) {
-            return true;
+            return false;
          }
       }
-      return false;
+      return true;
    }
 }

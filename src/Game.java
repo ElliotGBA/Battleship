@@ -4,6 +4,8 @@ import java.util.Map;
 public class Game {
 
    static Map<String, Integer> shipTypes = new HashMap<>();
+   static Board playerBoard;
+   static Board enemyBoard;
 
    public static void main(String[] args) {
 
@@ -13,15 +15,23 @@ public class Game {
       shipTypes.put("Battleship", 4);
       shipTypes.put("Carrier", 5);
 
-      Board playerBoard = new Board(11, 11, "Your Board");
-      Board enemyBoard = new Board(11, 11, "Enemy Board");
-      for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
-         enemyBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 1, true, enemyBoard).returnShip());
-      }
-      displayGame(playerBoard, enemyBoard);
+      createGame();
 
+   }
+
+   static void createGame() {
+      playerBoard = new Board(11, 11, "Your Board");
+      enemyBoard = new Board(11, 11, "Enemy Board");
       for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
-         playerBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 0, false, playerBoard).returnShip());
+         enemyBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 1, true, enemyBoard).getShip());
+      }
+      getPlayerInput();
+   }
+
+   static void getPlayerInput() {
+      displayGame(playerBoard, enemyBoard);
+      for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
+         playerBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 0, false, playerBoard).getShip());
          displayGame(playerBoard, enemyBoard);
       }
    }

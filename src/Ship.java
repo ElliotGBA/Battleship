@@ -3,9 +3,9 @@ import java.util.ArrayList;
 public class Ship {
 
    private ArrayList<ShipCell> ship;
-   private String type;
-   private int length;
-   private int team;
+   private final String type;
+   private final int length;
+   private final int team;
 
    Ship(ArrayList<ShipCell> ship, String type, int length, int team) {
       this.ship = ship;
@@ -18,7 +18,7 @@ public class Ship {
       return ship.isEmpty();
    }
 
-   public ArrayList<ShipCell> getShip() {
+   public ArrayList<ShipCell> getShipCellList() {
       return ship;
    }
    public void setShip(ArrayList<ShipCell> ship) {
