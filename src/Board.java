@@ -26,28 +26,12 @@ public class Board {
 
    public void placeShip(Ship ship) {
       ArrayList<ShipCell> positions = ship.getShip();
-      if (checkForShipCollisions(positions)) {
-         for (int i = 0; i < ship.getShip().size(); i++) {
-            int currentX = positions.get(i).getX();
-            int currentY = positions.get(i).getY();
-            shipMatrix[currentX][currentY] = ship.getShip().get(i);
-            occupiedPositions.add(new Position(currentX, currentY));
-         }
-      } else {
-         System.out.println(ANSI_RED + "That ship is colliding with another ship!" + ANSI_RESET);
-         placeShip(new ShipBuilder(ship.getType(), ship.getLength(), 0, false, this).returnShip());
+      for (int i = 0; i < ship.getShip().size(); i++) {
+         int currentX = positions.get(i).getX();
+         int currentY = positions.get(i).getY();
+         shipMatrix[currentX][currentY] = ship.getShip().get(i);
+         occupiedPositions.add(new Position(currentX, currentY));
       }
-   }
-
-   private boolean checkForShipCollisions(ArrayList<ShipCell> positions) {
-      for (ShipCell s : positions) {
-         if (shipMatrix[s.getX()][s.getY()] != null) {
-            return false;
-         } else {
-            return true;
-         }
-      }
-      return false;
    }
 
    public int[][] getBoard() {
@@ -61,12 +45,12 @@ public class Board {
    public void displayBoard(Map<String, Integer> shipTypes) {
       ArrayList<String> shipNames = new ArrayList<>();
       ArrayList<Integer> shipLengths = new ArrayList<>();
-      for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
+      for (Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
          shipNames.add(entry.getKey());
          shipLengths.add(entry.getValue());
       }
       String horizontalBar = "";
-      for (int i = -1; i < board.length-1; i++) {
+      for (int i = -1; i < board.length - 1; i++) {
          horizontalBar += ANSI_YELLOW + "[" + (i == -1 ? " " : i) + "]" + ANSI_RESET;
       }
 
@@ -79,20 +63,28 @@ public class Board {
          for (int j = 0; j < board[i].length; j++) {
             printBoardTiles(i, j);
          }
-            if (i == 0) { System.out.print(ANSI_YELLOW_BOLD + "  Ship Types:" + ANSI_RESET); }
-            if (i > 0 && i < 6) {
-               System.out.print("  " + shipNames.get(i-1) + " [" + ANSI_YELLOW_BOLD + shipLengths.get(i-1) + ANSI_RESET + "]");
-            }
-            // legend
-            if (i == 7) { System.out.print("  " + ANSI_GREEN + "[0]" + ANSI_RESET + " = friendly ship"); }
-            if (i == 8) { System.out.print("  " + ANSI_RED + "[*]" + ANSI_RESET + " = hit shot"); }
-            if (i == 9) { System.out.print("  [ ] = missed shot"); }
-            System.out.println();
+         if (i == 0) {
+            System.out.print(ANSI_YELLOW_BOLD + "  Ship Types:" + ANSI_RESET);
+         }
+         if (i > 0 && i < 6) {
+            System.out.print("  " + shipNames.get(i - 1) + " [" + ANSI_YELLOW_BOLD + shipLengths.get(i - 1) + ANSI_RESET + "]");
+         }
+         // legend
+         if (i == 7) {
+            System.out.print("  " + ANSI_GREEN + "[0]" + ANSI_RESET + " = friendly ship");
+         }
+         if (i == 8) {
+            System.out.print("  " + ANSI_RED + "[*]" + ANSI_RESET + " = hit shot");
+         }
+         if (i == 9) {
+            System.out.print("  [ ] = missed shot");
+         }
+         System.out.println();
       }
    }
 
    String getCharForNumber(int i) {
-      String s = i > 0 && i < 27 ? String.valueOf((char)(i + 'A' - 1)) : null;
+      String s = i > 0 && i < 27 ? String.valueOf((char) (i + 'A' - 1)) : null;
       return ANSI_YELLOW + "[" + s + "]" + ANSI_RESET;
    }
 
@@ -109,5 +101,4 @@ public class Board {
          System.out.print(enemyCell);
       }
    }
-
 }
