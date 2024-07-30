@@ -28,6 +28,9 @@ public class Ship {
    public ArrayList<ShipCell> getShipCellList() {
       return ship;
    }
+   public ShipCell getShipCellAtIndex(int index) {
+      return ship.get(index);
+   }
    public void setShip(ArrayList<ShipCell> ship) {
       this.ship = ship;
    }

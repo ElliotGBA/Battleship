@@ -9,32 +9,34 @@ public class Board {
    static final String ANSI_YELLOW_BOLD = "\u001B[1;33m";
    static final String ANSI_BLUE = "\u001B[34m";
 
-   int[][] board;
+   String boardName;
+
    ShipCell[][] shipMatrix;
    boolean[][] shotsFired;
-   String boardName;
    Set<Position> occupiedPositions;
 
    Board(int height, int width, String boardName) {
       this.boardName = boardName;
-      board = new int[height][width];
       shipMatrix = new ShipCell[height][width];
       shotsFired = new boolean[height][width];
       occupiedPositions = new HashSet<>();
    }
 
    public void placeShip(Ship ship) {
-      ArrayList<ShipCell> positions = ship.getShipCellList();
-      for (ShipCell position : positions) {
-         int currentX = position.getX();
-         int currentY = position.getY();
-         shipMatrix[currentX][currentY] = position;
-         occupiedPositions.add(new Position(currentX, currentY));
+      ArrayList<ShipCell> cells = ship.getShipCellList();
+      for (ShipCell c : cells) {
+         shipMatrix[c.getX()][c.getY()] = c;
+         occupiedPositions.add(new Position(c.getX(), c.getY()));
       }
    }
 
    public Set<Position> getOccupiedPositions() {
       return occupiedPositions;
+   }
+
+   public void updateShipMatrix(int[] targetedPosition, ShipCell newCell) {
+      shipMatrix[targetedPosition[0]][targetedPosition[1]] = newCell;
+      System.out.println("Updated cell state at position: " + targetedPosition[0] + ", " + targetedPosition[1]);
    }
 
    public void displayBoard(Map<String, Integer> shipTypes) {
@@ -45,7 +47,7 @@ public class Board {
          shipLengths.add(entry.getValue());
       }
       StringBuilder horizontalBar = new StringBuilder();
-      for (int i = -1; i < board.length - 1; i++) {
+      for (int i = -1; i < shipMatrix.length - 1; i++) {
          horizontalBar.append(ANSI_YELLOW + "[").append(i == -1 ? " " : i).append("]").append(ANSI_RESET);
       }
 
@@ -54,8 +56,8 @@ public class Board {
       String displayName = Objects.equals(this.boardName, "Your Board") ? friendlyBoard : enemyBoard;
       System.out.print("           " + displayName);
       System.out.print("\n" + horizontalBar);
-      for (int i = 0; i < board.length; i++) {
-         for (int j = 0; j < board[i].length; j++) {
+      for (int i = 0; i < shipMatrix.length; i++) {
+         for (int j = 0; j < shipMatrix[i].length; j++) {
             printBoardTiles(i, j);
          }
          // ship legend
@@ -85,6 +87,9 @@ public class Board {
       }
    }
 
+   public void setShipMatrix(ShipCell[][] shipMatrix) {
+      this.shipMatrix =  shipMatrix;
+   }
    public ShipCell[][] getShipMatrix() {
       return shipMatrix;
    }

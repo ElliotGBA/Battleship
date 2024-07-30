@@ -16,6 +16,7 @@ public class Firing {
       handleFiring();
    }
 
+   // handles the entire firing cycle
    void handleFiring() {
       int[] targetedPosition = getPositionInput();
       if (checkForHit(targetedPosition)) {
@@ -47,7 +48,9 @@ public class Firing {
 
    void updateCellState(int[] targetedPosition) {
       ShipCell[][] shipMatrix = targetedBoard.getShipMatrix();
-      shipMatrix[targetedPosition[0]][targetedPosition[1]].setState(0);
+      ShipCell targetCell = shipMatrix[targetedPosition[0]][targetedPosition[1]];
+      targetCell.setState(0);
+      targetedBoard.updateShipMatrix(targetedPosition, targetCell);
    }
 
    void handleHit(int[] targetedPosition) {

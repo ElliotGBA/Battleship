@@ -20,7 +20,7 @@ public class Game {
       boolean playerTurn = true;
       while (playing) {
          displayGame(playerBoard, enemyBoard);
-         Firing volley = new Firing(playerTurn ? enemyBoard : playerBoard);
+         Firing firing = new Firing(playerTurn ? enemyBoard : playerBoard);
          playerTurn = !playerTurn;
       }
    }
