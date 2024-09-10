@@ -11,6 +11,7 @@ public class Game {
 
       createShips();
       createGame();
+      //getPlayerPositions(); // place player ships
       gameLoop();
 
    }
@@ -20,7 +21,8 @@ public class Game {
       boolean playerTurn = true;
       while (playing) {
          displayGame(playerBoard, enemyBoard);
-         Firing firing = new Firing(playerTurn ? enemyBoard : playerBoard);
+         //Firing firing = new Firing(playerTurn ? enemyBoard : playerBoard); // for real game (take turns back and forth)
+         Firing firing = new Firing(enemyBoard); // for testing (only fire at enemy board)
          playerTurn = !playerTurn;
       }
    }

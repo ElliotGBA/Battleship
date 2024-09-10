@@ -8,11 +8,9 @@ public class Firing {
    static final String ANSI_YELLOW = "\u001B[33m";
 
    private final Board targetedBoard;
-   private final boolean[][] shotsFired;
 
    Firing(Board targetedBoard) {
       this.targetedBoard = targetedBoard;
-      this.shotsFired = targetedBoard.getShotsFired();
       handleFiring();
    }
 
@@ -20,11 +18,11 @@ public class Firing {
    void handleFiring() {
       int[] targetedPosition = getPositionInput();
       if (checkForHit(targetedPosition)) {
-         updateShotsFired(targetedPosition);
          handleHit(targetedPosition);
       } else {
          handleMiss();
       }
+      updateShotsFired(targetedPosition);
    }
 
    boolean checkForHit(int[] targetedPosition) {
@@ -33,15 +31,15 @@ public class Firing {
          System.out.println(ANSI_RED + "You already shot there! Pick a different firing position." + ANSI_RESET);
          handleFiring(); // if shot is repeat, restart shooting phase
       }
-      return shipMatrix[targetedPosition[0]][targetedPosition[1]] != null;
+      return shipMatrix[targetedPosition[0]][targetedPosition[1]] != null; // return true if hit is scored
    }
 
    boolean isRepeatShot(int[] targetedPosition) {
-      return shotsFired[targetedPosition[0]][targetedPosition[1]];
+      return targetedBoard.shotsFired[targetedPosition[0]][targetedPosition[1]];
    }
 
    void updateShotsFired(int[] targetedPosition) {
-      boolean[][] newShotsFired = shotsFired;
+      boolean[][] newShotsFired = targetedBoard.shotsFired;
       newShotsFired[targetedPosition[0]][targetedPosition[1]] = true;
       targetedBoard.setShotsFired(newShotsFired);
    }

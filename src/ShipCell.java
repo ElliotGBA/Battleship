@@ -23,7 +23,7 @@ public class ShipCell {
       //String s = "[" + this.state + "]" + ANSI_RESET;
       if (this.state == 1) {
          s = this.team == 0 ? (ANSI_GREEN + s) : (ANSI_RED + s);
-      } else {
+      } else if (this.state == 0) {
          s = ANSI_RED + "[*]" + ANSI_RESET;
       }
       return s;
@@ -51,5 +51,10 @@ public class ShipCell {
 
    public int getY() {
       return this.position.getY();
+   }
+
+   public void displayIcon() {
+      this.icon = createIcon();
+      System.out.print(this.icon);
    }
 }

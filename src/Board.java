@@ -8,6 +8,7 @@ public class Board {
    static final String ANSI_YELLOW = "\u001B[33m";
    static final String ANSI_YELLOW_BOLD = "\u001B[1;33m";
    static final String ANSI_BLUE = "\u001B[34m";
+   static final String ANSI_GRAY = "\u001B[37m";
 
    String boardName;
 
@@ -35,7 +36,7 @@ public class Board {
    }
 
    public void updateShipMatrix(int[] targetedPosition, ShipCell newCell) {
-      shipMatrix[targetedPosition[0]][targetedPosition[1]] = newCell;
+      //shipMatrix[targetedPosition[0]][targetedPosition[1]] = newCell;
       System.out.println("Updated cell state at position: " + targetedPosition[0] + ", " + targetedPosition[1]);
    }
 
@@ -65,7 +66,7 @@ public class Board {
          if (i > 0 && i < 6) {System.out.print("  " + shipNames.get(i - 1) + " [" + ANSI_YELLOW_BOLD + shipLengths.get(i - 1) + ANSI_RESET + "]");}
          if (i == 7) {System.out.print("  " + ANSI_GREEN + "[0]" + ANSI_RESET + " = friendly ship");}
          if (i == 8) {System.out.print("  " + ANSI_RED + "[*]" + ANSI_RESET + " = hit shot");}
-         if (i == 9) {System.out.print("  [ ] = missed shot");}
+         if (i == 9) {System.out.print(ANSI_GRAY + "  [X]" + ANSI_RESET + " = missed shot");}
          System.out.println();
       }
    }
@@ -77,13 +78,16 @@ public class Board {
 
    void printBoardTiles(int i, int j) {
       String waterCell = ANSI_BLUE + "[~]" + ANSI_RESET;
+      String missedWaterCell = ANSI_GRAY + "[X]" + ANSI_RESET;
 
-      if (j == 0 && i != 0) {
+      if (j == 0 && i != 0) { // edge of board
          System.out.print(getCharForNumber(i));
-      } else if (i != 0 && j != 0 && shipMatrix[i][j] == null) {
+      } else if (shotsFired[i][j] && shipMatrix[i][j] == null) { // missed water shot
+         System.out.print(missedWaterCell);
+      } else if (i != 0 && j != 0 && (shipMatrix[i][j] == null || shipMatrix[i][j].getState() == 1)) { // print water tiles over water and hidden enemy ship cells
          System.out.print(waterCell);
-      } else if (shipMatrix[i][j] != null) {
-         System.out.print(shipMatrix[i][j].getIcon());
+      } else if (shipMatrix[i][j] != null && (shipMatrix[i][j].getTeam() == 1 && shipMatrix[i][j].getState() == 0)) {
+         shipMatrix[i][j].displayIcon();
       }
    }
 
