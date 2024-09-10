@@ -22,6 +22,11 @@ public class Ship {
             break;
          }
       }
+      if (isDestroyed) {
+         for (ShipCell c : ship) {
+            c.setIsShipDestroyed(true);
+         }
+      }
       return isDestroyed;
    }
 

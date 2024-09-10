@@ -63,6 +63,7 @@ public class ShipBuilder {
       }
       this.ship = new Ship(shipCells, type, length, team);
       board.placeShip(this.ship);
+      Game.addShip(this.ship);
    }
 
    private ArrayList<Position> calculateLine(int[] bowPositions, int[] sternPositions, int length, String type, int team) {

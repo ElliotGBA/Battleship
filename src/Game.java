@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Game {
 
    static Map<String, Integer> shipTypes = new HashMap<>();
+   public static ArrayList<Ship> ships = new ArrayList<>();
    static Board playerBoard;
    static Board enemyBoard;
 
@@ -59,6 +61,13 @@ public class Game {
       enemyBoard.displayBoard(shipTypes);
       System.out.println();
       playerBoard.displayBoard(shipTypes);
+   }
+
+   public static void addShip(Ship ship) {
+      ships.add(ship);
+   }
+   public static ArrayList<Ship> getShips() {
+      return ships;
    }
 
 }

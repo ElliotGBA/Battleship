@@ -91,16 +91,10 @@ public class Board {
       }
    }
 
-   public void setShipMatrix(ShipCell[][] shipMatrix) {
-      this.shipMatrix =  shipMatrix;
-   }
    public ShipCell[][] getShipMatrix() {
       return shipMatrix;
    }
    public void setShotsFired(boolean[][] shotsFired) {
       this.shotsFired = shotsFired;
-   }
-   public boolean[][] getShotsFired() {
-      return this.shotsFired;
    }
 }

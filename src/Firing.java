@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Firing {
@@ -23,6 +24,7 @@ public class Firing {
          handleMiss();
       }
       updateShotsFired(targetedPosition);
+      updateAreShipsDestroyed();
    }
 
    boolean checkForHit(int[] targetedPosition) {
@@ -72,6 +74,13 @@ public class Firing {
          int newPosX = newPos.toUpperCase().charAt(0) - 'A' + 1;
          int newPosY = Integer.parseInt(newPos.substring(1)) + 1;
          return new int[]{newPosX, newPosY};
+      }
+   }
+
+   private void updateAreShipsDestroyed() {
+      ArrayList<Ship> ships = Game.getShips();
+      for (Ship s : ships) {
+         s.isDestroyed();
       }
    }
 

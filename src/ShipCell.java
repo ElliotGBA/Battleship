@@ -9,6 +9,7 @@ public class ShipCell {
    int team = 0; // 0 is friendly, 1 is hostile
    String icon;
    String type = "t";
+   boolean isShipDestroyed = false;
 
    ShipCell(Position position, int state, int team, String type) {
       this.position = position;
@@ -23,14 +24,16 @@ public class ShipCell {
       //String s = "[" + this.state + "]" + ANSI_RESET;
       if (this.state == 1) {
          s = this.team == 0 ? (ANSI_GREEN + s) : (ANSI_RED + s);
+      } else if (this.state == 0 && isShipDestroyed) {
+         s =  ANSI_RED + "[" + this.type.charAt(0) + "]" + ANSI_RESET;
       } else if (this.state == 0) {
          s = ANSI_RED + "[*]" + ANSI_RESET;
       }
       return s;
    }
 
-   public String getIcon() {
-      return icon;
+   public void setIsShipDestroyed(boolean b) {
+      this.isShipDestroyed = b;
    }
 
    public int getTeam() {
