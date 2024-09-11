@@ -13,7 +13,6 @@ public class Game {
 
       createShips();
       createGame();
-      //getPlayerPositions(); // place player ships
       gameLoop();
 
    }
@@ -36,7 +35,7 @@ public class Game {
       for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
          enemyBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 1, true, enemyBoard).getShip());
       }
-      //getPlayerPositions(); // disable if testing enemy positions
+      getPlayerPositions(); // disable if testing enemy positions
    }
 
    static void getPlayerPositions() {

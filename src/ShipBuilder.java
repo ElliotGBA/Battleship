@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class ShipBuilder {
 
@@ -30,13 +27,13 @@ public class ShipBuilder {
       int[] bowPositions = getPositionInput(type, length, team);
       System.out.print("Enter stern position (e.g. C3): ");
       int[] sternPositions = getPositionInput(type, length, team);
-      ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type, team);
+      Optional<ArrayList<Position>> optionalPositions = calculateLine(bowPositions, sternPositions, length, type, team);
 
-      if (positions != null && checkForShipCollisions(positions)) {
-         createShip(positions, type, team, length);
+      if (optionalPositions.isPresent() && checkForShipCollisions(optionalPositions.get())) {
+         createShip(optionalPositions.get(), type, team, length);
          System.out.println("\n\n\n\n\n\n\n");
       } else {
-         System.out.println(ANSI_RED + "That ship is colliding with another ship! Try again." + ANSI_RESET);
+         System.out.println(ANSI_RED + "That ship is colliding with another ship or has an invalid placement! Try again." + ANSI_RESET);
          inputShipPositions(type, length, team);
       }
 
@@ -48,12 +45,13 @@ public class ShipBuilder {
       if (!isValidCoordinate(newPos)) {
          System.out.println(ANSI_RED + "That is not a valid coordinate, try again." + ANSI_RESET);
          System.out.print("Enter position (e.g. C3): ");
-         return getPositionInput(type, length, team);
+         getPositionInput(type, length, team);
       } else {
          int newPosX = newPos.toUpperCase().charAt(0) - 'A' + 1;
          int newPosY = Integer.parseInt(newPos.substring(1)) + 1;
          return new int[]{newPosX, newPosY};
       }
+      return null;
    }
 
    public void createShip(ArrayList<Position> positions, String type, int team, int length) {
@@ -66,7 +64,7 @@ public class ShipBuilder {
       Game.addShip(this.ship);
    }
 
-   private ArrayList<Position> calculateLine(int[] bowPositions, int[] sternPositions, int length, String type, int team) {
+   private Optional<ArrayList<Position>> calculateLine(int[] bowPositions, int[] sternPositions, int length, String type, int team) {
       if (verifyVerticalOrHorizontalPlacement(bowPositions, sternPositions, length)) {
          ArrayList<int[]> intPositions = new ArrayList<>();
          ArrayList<Position> positions = new ArrayList<>();
@@ -87,13 +85,12 @@ public class ShipBuilder {
             positions.add(new Position(i[0], i[1]));
          }
          if (checkForShipCollisions(positions)) {
-            return positions;
+            return Optional.of(positions); // Ship placement is valid and has no collisions
          }
       } else {
          System.out.println(ANSI_RED + "That is not a valid ship placement! Try again!" + ANSI_RESET);
-         inputShipPositions(type, length, team);
       }
-      return null;
+      return Optional.empty(); // Ship placement failed
    }
 
    private boolean verifyVerticalOrHorizontalPlacement(int[] bowPositions, int[] sternPositions, int length) {
@@ -115,9 +112,9 @@ public class ShipBuilder {
          bowPositions = getRandomPosition();
          sternPositions = getRandomPosition();
          if (verifyVerticalOrHorizontalPlacement(bowPositions, sternPositions, length)) {
-            ArrayList<Position> positions = calculateLine(bowPositions, sternPositions, length, type, team);
-            if (positions != null && checkForShipCollisions(positions)) {
-               createShip(positions, type, team, length);
+            Optional<ArrayList<Position>> optionalPositions = calculateLine(bowPositions, sternPositions, length, type, team);
+            if (optionalPositions.isPresent() && checkForShipCollisions(optionalPositions.get())) {
+               createShip(optionalPositions.get(), type, team, length);
                validPlacement = true;
             }
          }

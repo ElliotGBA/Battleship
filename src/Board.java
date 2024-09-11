@@ -8,7 +8,7 @@ public class Board {
    static final String ANSI_YELLOW = "\u001B[33m";
    static final String ANSI_YELLOW_BOLD = "\u001B[1;33m";
    static final String ANSI_BLUE = "\u001B[34m";
-   static final String ANSI_GRAY = "\u001B[37m";
+   static final String ANSI_BLACK = "\u001B[30m";
 
    String boardName;
 
@@ -66,7 +66,7 @@ public class Board {
          if (i > 0 && i < 6) {System.out.print("  " + shipNames.get(i - 1) + " [" + ANSI_YELLOW_BOLD + shipLengths.get(i - 1) + ANSI_RESET + "]");}
          if (i == 7) {System.out.print("  " + ANSI_GREEN + "[0]" + ANSI_RESET + " = friendly ship");}
          if (i == 8) {System.out.print("  " + ANSI_RED + "[*]" + ANSI_RESET + " = hit shot");}
-         if (i == 9) {System.out.print(ANSI_GRAY + "  [X]" + ANSI_RESET + " = missed shot");}
+         if (i == 9) {System.out.print(ANSI_BLACK + "  [X]" + ANSI_RESET + " = missed shot");}
          System.out.println();
       }
       System.out.println();
@@ -79,7 +79,7 @@ public class Board {
 
    void printBoardTiles(int i, int j) {
       String waterCell = ANSI_BLUE + "[~]" + ANSI_RESET;
-      String missedWaterCell = ANSI_GRAY + "[X]" + ANSI_RESET;
+      String missedWaterCell = ANSI_BLACK + "[X]" + ANSI_RESET;
 
       if (j == 0 && i != 0) { // edge of board
          System.out.print(getCharForNumber(i));
