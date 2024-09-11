@@ -69,6 +69,7 @@ public class Board {
          if (i == 9) {System.out.print(ANSI_GRAY + "  [X]" + ANSI_RESET + " = missed shot");}
          System.out.println();
       }
+      System.out.println();
    }
 
    String getCharForNumber(int i) {
@@ -84,9 +85,9 @@ public class Board {
          System.out.print(getCharForNumber(i));
       } else if (shotsFired[i][j] && shipMatrix[i][j] == null) { // missed water shot
          System.out.print(missedWaterCell);
-      } else if (i != 0 && j != 0 && (shipMatrix[i][j] == null || shipMatrix[i][j].getState() == 1)) { // print water tiles over water and hidden enemy ship cells
+      } else if (i != 0 && j != 0 && (shipMatrix[i][j] == null || (shipMatrix[i][j].getState() == 1) && shipMatrix[i][j].getTeam() == 1)) { // print water tiles over water and hidden enemy ship cells
          System.out.print(waterCell);
-      } else if (shipMatrix[i][j] != null && (shipMatrix[i][j].getTeam() == 1 && shipMatrix[i][j].getState() == 0)) {
+      } else if (shipMatrix[i][j] != null) {
          shipMatrix[i][j].displayIcon();
       }
    }

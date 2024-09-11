@@ -7,6 +7,9 @@ public class Ship {
    private final int length;
    private final int team;
 
+   static final String ANSI_RESET = "\u001B[0m";
+   static final String ANSI_GREEN = "\033[1;32m";
+
    Ship(ArrayList<ShipCell> ship, String type, int length, int team) {
       this.ship = ship;
       this.type = type;
@@ -14,7 +17,7 @@ public class Ship {
       this.team = team;
    }
 
-   public boolean isDestroyed() {
+   public void isDestroyed() {
       boolean isDestroyed = true;
       for (ShipCell c : ship) {
          if (c.getState() == 1) {
@@ -23,29 +26,19 @@ public class Ship {
          }
       }
       if (isDestroyed) {
+         System.out.println(ANSI_GREEN + "You sunk their " + this.type + "!" + ANSI_RESET);
          for (ShipCell c : ship) {
             c.setIsShipDestroyed(true);
          }
       }
-      return isDestroyed;
    }
 
    public ArrayList<ShipCell> getShipCellList() {
       return ship;
    }
+
    public ShipCell getShipCellAtIndex(int index) {
       return ship.get(index);
    }
-   public void setShip(ArrayList<ShipCell> ship) {
-      this.ship = ship;
-   }
-   public String getType() {
-      return type;
-   }
-   public int getLength() {
-      return length;
-   }
-   public int getTeam() {
-      return team;
-   }
+
 }

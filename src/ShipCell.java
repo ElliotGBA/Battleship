@@ -21,7 +21,7 @@ public class ShipCell {
 
    String createIcon() {
       String s = "[" + this.type.charAt(0) + "]" + ANSI_RESET;
-      //String s = "[" + this.state + "]" + ANSI_RESET;
+      //String s = "[" + this.state + "]" + ANSI_RESET; // debugging
       if (this.state == 1) {
          s = this.team == 0 ? (ANSI_GREEN + s) : (ANSI_RED + s);
       } else if (this.state == 0 && isShipDestroyed) {

@@ -23,7 +23,7 @@ public class Game {
       boolean playerTurn = true;
       while (playing) {
          displayGame(playerBoard, enemyBoard);
-         //Firing firing = new Firing(playerTurn ? enemyBoard : playerBoard); // for real game (take turns back and forth)
+         //Firing firing = new Firing(playerTurn ? enemyBoard : playerBoard); // for full game (take turns back and forth)
          Firing firing = new Firing(enemyBoard); // for testing (only fire at enemy board)
          playerTurn = !playerTurn;
       }
@@ -36,7 +36,7 @@ public class Game {
       for(Map.Entry<String, Integer> entry : shipTypes.entrySet()) {
          enemyBoard.placeShip(new ShipBuilder(entry.getKey(), entry.getValue(), 1, true, enemyBoard).getShip());
       }
-      //getPlayerPositions();
+      //getPlayerPositions(); // disable if testing enemy positions
    }
 
    static void getPlayerPositions() {
